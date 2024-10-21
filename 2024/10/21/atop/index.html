@@ -1,0 +1,215 @@
+<!DOCTYPE html><html lang="zh_CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>atop | C</title><meta name="author" content="Mmc"><meta name="copyright" content="Mmc"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="atop 是一个高级的系统监控工具，类似于 top，但功能更为强大。它不仅能监控 CPU、内存、磁盘、网络等的使用情况，还能保存历史记录以便以后查看。它对性能瓶颈的分析尤其有用。  安装 atop不同的 Linux 发行版有不同的安装方式。在 Ubuntu&#x2F;Debian 系统上：bash复制代码sudo apt install atop在 CentOS&#x2F;RedHat 系统上：b">
+<meta property="og:type" content="article">
+<meta property="og:title" content="atop">
+<meta property="og:url" content="http://example.com/2024/10/21/atop/index.html">
+<meta property="og:site_name" content="C">
+<meta property="og:description" content="atop 是一个高级的系统监控工具，类似于 top，但功能更为强大。它不仅能监控 CPU、内存、磁盘、网络等的使用情况，还能保存历史记录以便以后查看。它对性能瓶颈的分析尤其有用。  安装 atop不同的 Linux 发行版有不同的安装方式。在 Ubuntu&#x2F;Debian 系统上：bash复制代码sudo apt install atop在 CentOS&#x2F;RedHat 系统上：b">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png">
+<meta property="article:published_time" content="2024-10-21T03:29:39.000Z">
+<meta property="article:modified_time" content="2024-10-21T03:30:34.043Z">
+<meta property="article:author" content="Mmc">
+<meta property="article:tag" content="linux,atop">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://example.com/2024/10/21/atop/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=4.13.0"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"top_n_per_article":1,"unescape":false,"languages":{"hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: 'Copy Successful',
+    error: 'Copy Error',
+    noSupport: 'Browser Not Supported'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: 'Just now',
+    min: 'minutes ago',
+    hour: 'hours ago',
+    day: 'days ago',
+    month: 'months ago'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.11.1/dist/infinitegrid.min.js',
+    buttonText: 'Load More'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'atop',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: false,
+  postUpdate: '2024-10-21 11:30:34'
+}</script><script>(win=>{
+      win.saveToLocal = {
+        set: (key, value, ttl) => {
+          if (ttl === 0) return
+          const now = Date.now()
+          const expiry = now + ttl * 86400000
+          const item = {
+            value,
+            expiry
+          }
+          localStorage.setItem(key, JSON.stringify(item))
+        },
+      
+        get: key => {
+          const itemStr = localStorage.getItem(key)
+      
+          if (!itemStr) {
+            return undefined
+          }
+          const item = JSON.parse(itemStr)
+          const now = Date.now()
+      
+          if (now > item.expiry) {
+            localStorage.removeItem(key)
+            return undefined
+          }
+          return item.value
+        }
+      }
+    
+      win.getScript = (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        script.onerror = reject
+        script.onload = script.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          script.onload = script.onreadystatechange = null
+          resolve()
+        }
+
+        Object.keys(attr).forEach(key => {
+          script.setAttribute(key, attr[key])
+        })
+
+        document.head.appendChild(script)
+      })
+    
+      win.getCSS = (url, id = false) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onerror = reject
+        link.onload = link.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          link.onload = link.onreadystatechange = null
+          resolve()
+        }
+        document.head.appendChild(link)
+      })
+    
+      win.activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+        if (t === 'dark') activateDarkMode()
+        else if (t === 'light') activateLightMode()
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+      const detectApple = () => {
+        if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+          document.documentElement.classList.add('apple')
+        }
+      }
+      detectApple()
+    })(window)</script><meta name="generator" content="Hexo 7.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">8</div></a><a href="/tags/"><div class="headline">Tags</div><div class="length-num">9</div></a><a href="/categories/"><div class="headline">Categories</div><div class="length-num">4</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/love/"><i class="fa-fw fas fa-heart"></i><span> Love</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header"><nav id="nav"><span id="blog-info"><a href="/" title="C"><span class="site-name">C</span></a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search" href="javascript:void(0);"><i class="fas fa-search fa-fw"></i><span> Search</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/love/"><i class="fa-fw fas fa-heart"></i><span> Love</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">atop</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">Created</span><time class="post-meta-date-created" datetime="2024-10-21T03:29:39.000Z" title="Created 2024-10-21 11:29:39">2024-10-21</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">Updated</span><time class="post-meta-date-updated" datetime="2024-10-21T03:30:34.043Z" title="Updated 2024-10-21 11:30:34">2024-10-21</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="atop"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">Post Views:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><p>atop 是一个高级的系统监控工具，类似于 top，但功能更为强大。它不仅能监控 CPU、内存、磁盘、网络等的使用情况，还能保存历史记录以便以后查看。它对性能瓶颈的分析尤其有用。</p>
+<ol>
+<li>安装 atop<br>不同的 Linux 发行版有不同的安装方式。<br>在 Ubuntu&#x2F;Debian 系统上：<br>bash复制代码sudo apt install atop<br>在 CentOS&#x2F;RedHat 系统上：<br>bash复制代码sudo yum install atop<br>在 Fedora 系统上：<br>bash复制代码sudo dnf install atop<br>在 Arch Linux 系统上：<br>bash复制代码sudo pacman -S atop</li>
+<li>启动 atop<br>启动 atop 很简单，只需运行：<br>bash复制代码sudo atop<br>atop 会实时显示系统各项资源的使用情况，并每 10 秒刷新一次（默认刷新间隔）。可以通过命令行参数来定制其行为。</li>
+<li>atop 显示的信息<br>顶部的全局信息：</li>
+</ol>
+<ul>
+<li>PRC：显示系统上的进程信息，包括每秒创建的进程和上下文切换数量。</li>
+<li>CPU：显示 CPU 使用情况。分为用户空间、系统空间、硬件中断和软件中断的 CPU 占用。</li>
+<li>CPL：显示系统的负载（即 CPU 队列长度），包括 1、5 和 15 分钟的平均负载。</li>
+<li>MEM：显示内存的总体使用情况，包括总内存、已使用内存、缓存、和交换区的使用情况。</li>
+<li>SWP：显示交换分区（Swap）信息。</li>
+<li>DSK：显示磁盘的 IO 信息，包括每秒读写的块数。</li>
+<li>NET：显示网络的发送和接收数据。<br>每个进程的信息：</li>
+<li>PID：进程的 ID。</li>
+<li>THR：进程的线程数。</li>
+<li>SYSCPU：进程使用的系统 CPU 时间。</li>
+<li>USRCUP：进程使用的用户 CPU 时间。</li>
+<li>VSS：虚拟内存使用量。</li>
+<li>RSS：实际使用的物理内存。</li>
+<li>RDDSK：进程从磁盘读取的字节数。</li>
+<li>WRDSK：进程写入磁盘的字节数。</li>
+<li>NET：进程的网络活动，包括每秒发送和接收的字节数。</li>
+<li>ST：系统状态，D 代表不可中断睡眠，R 代表运行中，S 代表休眠，Z 代表僵尸进程。</li>
+</ul>
+<ol start="4">
+<li>常用参数</li>
+</ol>
+<ul>
+<li>-r<br>：以原始模式查看历史数据。<br>bash复制代码sudo atop -r &#x2F;var&#x2F;log&#x2F;atop&#x2F;atop_YYYYMMDD</li>
+<li>-w<br>：将系统状态写入日志文件，默认保存到 &#x2F;var&#x2F;log&#x2F;atop&#x2F;。<br>bash复制代码sudo atop -w &#x2F;var&#x2F;log&#x2F;atop&#x2F;atop.log 10<br>这会每 10 秒记录一次系统状态。</li>
+<li>-d<br>：显示磁盘统计信息。<br>bash复制代码sudo atop -d</li>
+<li>-m<br>：显示内存统计信息。<br>bash复制代码sudo atop -m</li>
+<li>-n<br>：显示网络统计信息。<br>bash复制代码sudo atop -n</li>
+<li>-s<br>：显示交换分区的使用情况。<br>bash复制代码sudo atop -s</li>
+<li>-u<br>：显示用户 CPU 使用信息。<br>bash复制代码sudo atop -u</li>
+<li>-p <PID><br>：只显示指定进程的状态。<br>bash复制代码sudo atop -p <PID></li>
+<li>-c<br>：显示进程的命令行。<br>bash复制代码sudo atop -c</li>
+</ul>
+<ol start="5">
+<li><p>在日志模式下查看历史数据<br>如果 atop 被配置为记录日志，你可以通过以下命令查看历史数据：<br>bash复制代码sudo atop -r &#x2F;var&#x2F;log&#x2F;atop&#x2F;atop_YYYYMMDD</p>
+</li>
+<li><p>交互命令<br>当 atop 运行时，你可以按键切换不同的视图：</p>
+</li>
+</ol>
+<ul>
+<li>c：显示&#x2F;隐藏命令行参数。</li>
+<li>d：显示磁盘使用情况。</li>
+<li>n：显示网络使用情况。</li>
+<li>m：显示内存使用情况。</li>
+<li>t：按 CPU 使用率排序进程。</li>
+<li>u：按用户 CPU 使用率排序进程。</li>
+<li>q：退出 atop。</li>
+</ul>
+<ol start="7">
+<li>结合 cron 自动记录<br>你可以通过 cron 定期执行 atop 来保存系统性能的历史数据。编辑 crontab 文件：<br>bash复制代码sudo crontab -e</li>
+</ol>
+<p>添加一行：<br>bash复制代码*&#x2F;10 * * * * &#x2F;usr&#x2F;bin&#x2F;atop -a -w &#x2F;var&#x2F;log&#x2F;atop&#x2F;atop.log 600</p>
+<p>这会每 10 分钟执行一次 atop，并保存系统状态到日志。<br>8. 总结<br>atop 是一个功能强大的性能监控工具，它不仅能够实时监控系统性能，还能保存数据以便日后分析。通过掌握其各种参数和交互命令，能够轻松地分析系统的性能瓶颈，尤其在 CPU、内存、磁盘 IO 和网络负载方面。</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>Author: </span><span class="post-copyright-info"><a href="http://example.com">Mmc</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>Link: </span><span class="post-copyright-info"><a href="http://example.com/2024/10/21/atop/">http://example.com/2024/10/21/atop/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>Copyright Notice: </span><span class="post-copyright-info">All articles in this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless stating additionally.</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/linux-atop/">linux,atop</a></div><div class="post_share"><div class="social-share" data-image="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="next-post pull-full"><a href="/2024/10/21/cpu%E6%BB%A1%E8%BD%BD%E6%8E%92%E6%9F%A5/" title="cpu满载排查"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">Next</div><div class="next_info">cpu满载排查</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">Mmc</div><div class="author-info__description">来去匆匆，快哉当下</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">8</div></a><a href="/tags/"><div class="headline">Tags</div><div class="length-num">9</div></a><a href="/categories/"><div class="headline">Categories</div><div class="length-num">4</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>Announcement</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>Recent Post</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/10/21/atop/" title="atop">atop</a><time datetime="2024-10-21T03:29:39.000Z" title="Created 2024-10-21 11:29:39">2024-10-21</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/10/21/cpu%E6%BB%A1%E8%BD%BD%E6%8E%92%E6%9F%A5/" title="cpu满载排查">cpu满载排查</a><time datetime="2024-10-21T02:25:02.000Z" title="Created 2024-10-21 10:25:02">2024-10-21</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/09/13/linuxRAID/" title="linuxRAID">linuxRAID</a><time datetime="2024-09-13T05:48:47.000Z" title="Created 2024-09-13 13:48:47">2024-09-13</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/09/11/docker%E6%8C%82%E8%BD%BD%E6%9C%AC%E6%9C%BA%E7%9B%AE%E5%BD%95/" title="docker挂载本机目录">docker挂载本机目录</a><time datetime="2024-09-11T06:27:36.000Z" title="Created 2024-09-11 14:27:36">2024-09-11</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/09/11/docker%E6%95%B0%E6%8D%AE%E5%8D%B7/" title="docker数据卷">docker数据卷</a><time datetime="2024-09-11T06:18:05.000Z" title="Created 2024-09-11 14:18:05">2024-09-11</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2024 By Mmc</div><div class="framework-info"><span>Framework </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>Theme </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="Read Mode"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="Toggle Between Light And Dark Mode"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="Toggle between Single-column and Double-column"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="Setting"><i class="fas fa-cog fa-spin"></i></button><button id="go-up" type="button" title="Back To Top"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=4.13.0"></script><script src="/js/main.js?v=4.13.0"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.umd.min.js"></script><div class="js-pjax"></div><script id="click-heart" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/dist/click-heart.min.js" async="async" mobile="false"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">Search</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  Loading the Database</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="Search for Posts" type="text"/></div></div><hr/><div id="local-search-results"></div><div id="local-search-stats-wrap"></div></div></div><div id="search-mask"></div><script src="/js/search/local-search.js?v=4.13.0"></script></div></div></body></html>
