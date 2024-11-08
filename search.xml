@@ -4,6 +4,19 @@
   
     
     <entry>
+      <title>gpu-export</title>
+      <link href="/2024/11/08/gpu-export/"/>
+      <url>/2024/11/08/gpu-export/</url>
+      
+        <content type="html"><![CDATA[<p>gpu-exporter+prometheus实现gpu监控</p><p>目录</p><ul><li>gpu-exporter+prometheus实现gpu监控</li><li>一、在gpu服务器上部署nvidia_gpu_exporter</li><li>1、获取nvidia_gpu_exporter</li><li>2、运行nvidia_gpu_exporter</li><li>3、检测监控数据</li><li>二、接入prometheus监控</li><li>三、常用监控指标</li><li>四、metrics接口信息示例</li></ul><p>gpu-exporter+prometheus实现gpu监控<br>本文档基于开源项目nvidia_gpu_exporter实现gpu监控<br>一、在gpu服务器上部署nvidia_gpu_exporter<br>1、获取nvidia_gpu_exporter<br>wget <a href="https://github.com/utkuozdemir/nvidia_gpu_exporter/releases/download/v1.2.0/nvidia_gpu_exporter_1.2.0_linux_x86_64.tar.gz">https://github.com/utkuozdemir/nvidia_gpu_exporter/releases/download/v1.2.0/nvidia_gpu_exporter_1.2.0_linux_x86_64.tar.gz</a><br>2、运行nvidia_gpu_exporter<br>tar xf nvidia_gpu_exporter_1.2.0_linux_x86_64.tar.gz mv nvidia_gpu_exporter &#x2F;usr&#x2F;local&#x2F;gpu-exporter&#x2F;nvidia_gpu_exporter &#x2F;usr&#x2F;local&#x2F;gpu-exporter&#x2F;nvidia_gpu_exporter &amp;<br>3、检测监控数据<br>项目运行后会自动监听:9835端口<br>尝试curl本机来查看是否正常获取到监控数据<br>curl localhost:9835&#x2F;metrics<br>二、接入prometheus监控<br>在prometheus.yml中添加exporter地址</p><ul><li>job_name: gpu-exporter  static_configs:  - targets: [‘192.168.2.23:9835’]    lables:      gpu: nvidia-4090      app: gpu-exporter  - targets: [‘192.168.2.26:9835’]    lables:      gpu: nvidia-4080      app: gpu-exporter<br>三、常用监控指标<br>指标名含义nvidia_smi_utilization_gpu_ratioGPU使用率nvidia_smi_memory_used_bytesGPU显存使用量nvidia_smi_memory_total_bytesGPU显存总量nvidia_smi_temperature_gpuGPU温度<br>Grafana dashboard</li></ul>]]></content>
+      
+      
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>cpu指标</title>
       <link href="/2024/10/21/cpu%E6%8C%87%E6%A0%87/"/>
       <url>/2024/10/21/cpu%E6%8C%87%E6%A0%87/</url>
