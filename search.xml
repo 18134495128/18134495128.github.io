@@ -4,6 +4,31 @@
   
     
     <entry>
+      <title>redis-hash</title>
+      <link href="/2024/11/13/redis-hash/"/>
+      <url>/2024/11/13/redis-hash/</url>
+      
+        <content type="html"><![CDATA[<p>Redis 的 Hash 是一种键值对的集合，非常适合存储对象或结构化数据。每个 Hash 键下可以包含多个字段和值，结构类似于 Python 的字典或 JSON 对象。Hash 非常适合在 Redis 中存储用户信息、配置数据等场景。<br>使用场景和示例<br>以下是几个 Redis Hash 的典型使用场景和示例：</p><ol><li>存储用户信息<br>在社交应用中，可以使用 Hash 来存储用户的个人信息，如用户名、邮箱、年龄等。这样可以方便地对某个字段进行更新，而无需重新存储整个对象。<br>示例：存储用户信息</li></ol><h1 id="添加用户信息"><a href="#添加用户信息" class="headerlink" title="添加用户信息"></a>添加用户信息</h1><p>HSET user:1001 username “Alice” email “<a href="mailto:&#97;&#108;&#x69;&#x63;&#101;&#64;&#101;&#x78;&#x61;&#x6d;&#x70;&#108;&#101;&#x2e;&#99;&#x6f;&#109;">&#97;&#108;&#x69;&#x63;&#101;&#64;&#101;&#x78;&#x61;&#x6d;&#x70;&#108;&#101;&#x2e;&#99;&#x6f;&#109;</a>“ age “30”<br>HSET user:1002 username “Bob” email “<a href="mailto:&#98;&#x6f;&#98;&#64;&#x65;&#x78;&#x61;&#109;&#112;&#x6c;&#x65;&#x2e;&#99;&#111;&#109;">&#98;&#x6f;&#98;&#64;&#x65;&#x78;&#x61;&#109;&#112;&#x6c;&#x65;&#x2e;&#99;&#111;&#109;</a>“ age “25”</p><h1 id="获取用户-1001-的所有信息"><a href="#获取用户-1001-的所有信息" class="headerlink" title="获取用户 1001 的所有信息"></a>获取用户 1001 的所有信息</h1><p>HGETALL user:1001</p><h1 id="获取用户-1001-的邮箱"><a href="#获取用户-1001-的邮箱" class="headerlink" title="获取用户 1001 的邮箱"></a>获取用户 1001 的邮箱</h1><p>HGET user:1001 email</p><h1 id="更新用户-1002-的年龄"><a href="#更新用户-1002-的年龄" class="headerlink" title="更新用户 1002 的年龄"></a>更新用户 1002 的年龄</h1><p>HSET user:1002 age “26”</p><ol start="2"><li>电商中的购物车<br>在电商应用中，可以使用 Hash 存储购物车数据。Hash 的字段可以是商品 ID，值可以是商品数量。这样可以高效地管理每个用户的购物车内容。<br>示例：管理购物车</li></ol><h1 id="用户-1001-添加商品到购物车"><a href="#用户-1001-添加商品到购物车" class="headerlink" title="用户 1001 添加商品到购物车"></a>用户 1001 添加商品到购物车</h1><p>HSET cart:1001 item:2001 2   # 2 件商品 ID 为 2001 的商品<br>HSET cart:1001 item:2002 1   # 1 件商品 ID 为 2002 的商品</p><h1 id="获取用户-1001-的购物车信息"><a href="#获取用户-1001-的购物车信息" class="headerlink" title="获取用户 1001 的购物车信息"></a>获取用户 1001 的购物车信息</h1><p>HGETALL cart:1001</p><h1 id="增加商品数量"><a href="#增加商品数量" class="headerlink" title="增加商品数量"></a>增加商品数量</h1><p>HINCRBY cart:1001 item:2001 1  # 将商品 2001 的数量增加 1</p><h1 id="删除商品"><a href="#删除商品" class="headerlink" title="删除商品"></a>删除商品</h1><p>HDEL cart:1001 item:2002</p><ol start="3"><li>网站配置信息<br>在网站或应用中，有时需要一组全局的配置信息，例如站点名称、主题、管理员邮箱等。可以使用 Redis Hash 存储这些配置信息，并方便地对其进行动态更新。<br>示例：存储网站配置</li></ol><h1 id="设置网站配置"><a href="#设置网站配置" class="headerlink" title="设置网站配置"></a>设置网站配置</h1><p>HSET site:config site_name “MyWebsite” theme “dark” admin_email “<a href="mailto:&#97;&#x64;&#109;&#105;&#x6e;&#64;&#109;&#x79;&#x77;&#x65;&#x62;&#x73;&#105;&#116;&#101;&#x2e;&#x63;&#x6f;&#109;">&#97;&#x64;&#109;&#105;&#x6e;&#64;&#109;&#x79;&#x77;&#x65;&#x62;&#x73;&#105;&#116;&#101;&#x2e;&#x63;&#x6f;&#109;</a>“</p><h1 id="获取网站的所有配置信息"><a href="#获取网站的所有配置信息" class="headerlink" title="获取网站的所有配置信息"></a>获取网站的所有配置信息</h1><p>HGETALL site:config</p><h1 id="更新配置，比如修改主题"><a href="#更新配置，比如修改主题" class="headerlink" title="更新配置，比如修改主题"></a>更新配置，比如修改主题</h1><p>HSET site:config theme “light”</p><ol start="4"><li>实时统计数据<br>在实时统计应用中，可以使用 Hash 存储多项数据，例如页面访问量、活跃用户数等，每个字段代表一种统计指标。<br>示例：统计页面访问量</li></ol><h1 id="初始化访问量统计"><a href="#初始化访问量统计" class="headerlink" title="初始化访问量统计"></a>初始化访问量统计</h1><p>HSET page:stats homepage 100 aboutpage 50 contactpage 30</p><h1 id="增加访问量"><a href="#增加访问量" class="headerlink" title="增加访问量"></a>增加访问量</h1><p>HINCRBY page:stats homepage 1  # 首页访问量增加 1<br>HINCRBY page:stats aboutpage 2 # 关于页面访问量增加 2</p><h1 id="获取所有页面访问量"><a href="#获取所有页面访问量" class="headerlink" title="获取所有页面访问量"></a>获取所有页面访问量</h1><p>HGETALL page:stats</p><ol start="5"><li>缓存对象或数据库行<br>将数据库中的行数据缓存在 Redis 中。对于一条数据库记录，可以将其转换为 Hash 存储，并使用主键作为 Hash 的键名。<br>示例：缓存数据库记录<br>假设有一个用户表 User，其中用户 ID 为 1001 的记录包含用户名、邮箱和年龄等字段。可以将其缓存到 Redis 中：</li></ol><h1 id="将数据库记录缓存到-Redis"><a href="#将数据库记录缓存到-Redis" class="headerlink" title="将数据库记录缓存到 Redis"></a>将数据库记录缓存到 Redis</h1><p>HSET user:1001 username “Alice” email “<a href="mailto:&#x61;&#108;&#105;&#x63;&#x65;&#x40;&#x65;&#x78;&#x61;&#x6d;&#112;&#x6c;&#101;&#46;&#99;&#x6f;&#109;">&#x61;&#108;&#105;&#x63;&#x65;&#x40;&#x65;&#x78;&#x61;&#x6d;&#112;&#x6c;&#101;&#46;&#99;&#x6f;&#109;</a>“ age “30”</p><h1 id="获取缓存记录"><a href="#获取缓存记录" class="headerlink" title="获取缓存记录"></a>获取缓存记录</h1><p>HGETALL user:1001</p><p>总结<br>Redis Hash 是一种高效的存储结构，适合存储结构化的对象数据，比如用户信息、购物车、配置项等。通过 HGET、HSET、HINCRBY 等命令，用户可以方便地获取、更新某些字段的值，在访问频繁的数据场景下尤其适合使用。</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> redis </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> redis-hash </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>redis-set</title>
       <link href="/2024/11/13/redis-set/"/>
       <url>/2024/11/13/redis-set/</url>
