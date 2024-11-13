@@ -4,6 +4,33 @@
   
     
     <entry>
+      <title>redis-set</title>
+      <link href="/2024/11/13/redis-set/"/>
+      <url>/2024/11/13/redis-set/</url>
+      
+        <content type="html"><![CDATA[<p>在 Redis 中，Set 是一种无序集合数据结构，可以高效地存储唯一的值，并支持交集、并集、差集等操作，非常适合实现共同好友、共同关注等功能。以下是一些关于 Redis Set 的操作和示例：<br>基本命令和用法<br>1.添加元素</p><ul><li>SADD将一个或多个元素添加到集合中，如果元素已存在，则会自动忽略。<br>SADD friends:user_a “Alice” “Bob” “Charlie” “David”<br>SADD friends:user_b “Charlie” “David” “Eve” “Frank”<br>2.查看集合中的元素</li><li>SMEMBERS返回集合中的所有元素。<br>SMEMBERS friends:user_a<br>SMEMBERS friends:user_b<br>3.求交集</li><li>SINTER找出两个集合的交集（共同好友）。<br>SINTER friends:user_a friends:user_b<br>4.求并集</li><li>SUNION返回两个集合的并集（所有好友）。<br>SUNION friends:user_a friends:user_b<br>5.求差集</li><li>SDIFF返回在第一个集合中有但在其他集合中没有的元素。<br>SDIFF friends:user_a friends:user_b  # 返回 user_a 独有的好友<br>SDIFF friends:user_b friends:user_a  # 返回 user_b 独有的好友</li></ul><p>6.获取集合元素个数</p><ul><li>SCARD获取集合中元素的数量。<br>SCARD friends:user_a<br>SCARD friends:user_b</li></ul><p>7.检查元素是否存在</p><ul><li>SISMEMBER判断某个元素是否在集合中。<br>SISMEMBER friends:user_a “Alice”  # 返回 1 表示存在，0 表示不存在</li></ul><p>实际示例：共同好友、共同关注<br>假设我们想找出 user_a 和 user_b 的共同好友：</p><h1 id="添加用户的好友"><a href="#添加用户的好友" class="headerlink" title="添加用户的好友"></a>添加用户的好友</h1><p>SADD friends:user_a “Alice” “Bob” “Charlie” “David”<br>SADD friends:user_b “Charlie” “David” “Eve” “Frank”</p><h1 id="找出共同好友"><a href="#找出共同好友" class="headerlink" title="找出共同好友"></a>找出共同好友</h1><p>SINTER friends:user_a friends:user_b</p><h1 id="输出-“Charlie”-“David”"><a href="#输出-“Charlie”-“David”" class="headerlink" title="输出: “Charlie”, “David”"></a>输出: “Charlie”, “David”</h1><p>并集操作示例</p><h1 id="获取所有好友（并集）"><a href="#获取所有好友（并集）" class="headerlink" title="获取所有好友（并集）"></a>获取所有好友（并集）</h1><p>SUNION friends:user_a friends:user_b</p><h1 id="输出-“Alice”-“Bob”-“Charlie”-“David”-“Eve”-“Frank”"><a href="#输出-“Alice”-“Bob”-“Charlie”-“David”-“Eve”-“Frank”" class="headerlink" title="输出: “Alice”, “Bob”, “Charlie”, “David”, “Eve”, “Frank”"></a>输出: “Alice”, “Bob”, “Charlie”, “David”, “Eve”, “Frank”</h1><p>差集操作示例</p><h1 id="获取仅属于-user-a-的好友"><a href="#获取仅属于-user-a-的好友" class="headerlink" title="获取仅属于 user_a 的好友"></a>获取仅属于 user_a 的好友</h1><p>SDIFF friends:user_a friends:user_b</p><h1 id="输出-“Alice”-“Bob”"><a href="#输出-“Alice”-“Bob”" class="headerlink" title="输出: “Alice”, “Bob”"></a>输出: “Alice”, “Bob”</h1><p>常见应用场景<br>1.社交网络：计算共同好友、共同关注、共同兴趣等。<br>2.推荐系统：基于用户关注、收藏等数据，快速找到共同的偏好。<br>3.权限管理：将用户的权限存入集合中，可以快速进行权限的交集和差集计算。<br>Redis Set 提供的高效集合操作，可以极大地简化和加速社交网络中的关系计算等场景。</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> redis </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 共同好友等 </tag>
+            
+            <tag> redis-set </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>mysql</title>
       <link href="/2024/11/08/mysql/"/>
       <url>/2024/11/08/mysql/</url>
